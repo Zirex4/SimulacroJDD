@@ -16,17 +16,45 @@ public class CabezaAlbaran {
 	private ArrayList<LineasAlbaran> lineasAlbaran;
 //Constructores
 //Metodos de Acceso
+	public String getSerie() {
+		return serie;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public int getCodigoCliente() {
+		return codigoCliente;
+	}
+
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public EstadoAlbaran getEstado() {
+		return estado;
+	}
+	protected void addLinea(LineasAlbaran linea) {
+		lineasAlbaran.add(linea);
+	}
 //Funcionalidades
 	/**
 	 * Funcion que suma linea a linea el valor total del alvaran
 	 * @return cuantia total del albaran con descuentos incluidos
 	 */
 	public float valorar() {
-		int total = 1;
-		//TODO
-		return total;
+		float totalAcumulativo = 0;
+		for (LineasAlbaran linea : lineasAlbaran) {
+			float total = linea.getCantidad() * linea.getPrecio();
+			float descuento = total * (linea.getDescuentoAplicado()/(float) 100);
+			total -= descuento;
+			totalAcumulativo += total;
+		}
+		return totalAcumulativo;
 	}
 	
+
 	/**
 	 * Funcion que agrupa y prepara para la impresion la linea pedida
 	 * dentro de un albaran
@@ -35,14 +63,10 @@ public class CabezaAlbaran {
 	 * @throws Exception 
 	 */
 	public String serializar(int numeroLinea) throws Exception {
-		String salida = "";
 		if(numeroLinea-1 < 0) throw new Exception("UnderflowException");
 		if(numeroLinea-1 > lineasAlbaran.size()) throw new Exception("OverflowException");
 		
-		LineasAlbaran _linea = new LineasAlbaran(lineasAlbaran.get(numeroLinea-1));
-		salida = _linea.toString();
-		
-		return salida;
+		return lineasAlbaran.get(numeroLinea-1).toString();
 	}
 	
 	/**
